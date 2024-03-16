@@ -54,26 +54,29 @@ def whiteOn():
 	blink(pwmBlue)
 	
 def lightsOff():
+	print("lightoff")
 	turnOff(pwmRed)
 	turnOff(pwmGreen)
 	turnOff(pwmBlue)
 
 def setLight(lightColor, lightIntensity):
-	
-	global intensity
-	intensity=lightIntensity
-	print(intensity)
-	if lightColor == "Red":
-		redOn()
-	elif lightColor == "Green":
-		greenOn()
-	elif lightColor == "Blue":
-		blueOn()
-	elif lightColor == "warm":
-		warmOn()
-	elif lightColor == "Cyan":
-		cyanOn()
-	elif lightColor == "Magenta":
-		magentaOn()
-	elif lightColor == "White":
-		whiteOn()
+	if(lightColor):
+		global intensity
+		intensity=lightIntensity
+		print(intensity)
+		if lightColor == "Red":
+			redOn()
+		elif lightColor == "Green":
+			greenOn()
+		elif lightColor == "Blue":
+			blueOn()
+		elif lightColor == "warm":
+			warmOn()
+		elif lightColor == "Cyan":
+			cyanOn()
+		elif lightColor == "Magenta":
+			magentaOn()
+		elif lightColor == "White":
+			whiteOn()
+	else:
+		lightsOff()

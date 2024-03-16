@@ -13,6 +13,11 @@ def getRoomInfo():
 def updateUserScan(user):
     return makeAPIRequest("PUT", "/rooms/" + roomID + "/users/" + user + "/scan")
 
+def scanUserAndReturnRoomInfo():
+    _, user = reader.read()
+    user = user.strip()
+    return user
+
 def setToPreferences(roomInfo):
     # environment.occupants = roomInfo["occupants"]
     # environment.settings = roomInfo["settings"]
@@ -22,6 +27,7 @@ def setToPreferences(roomInfo):
 
 try:
     roomInfo = getRoomInfo()
+    print(roomInfo)
     #mqttSubscriberThread.start()
     if roomInfo != {}:
         #environment.mqttClient.on_message = refreshPreferences

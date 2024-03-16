@@ -18,7 +18,7 @@ pwmMotor.start(0)
 def changeMotorSpeed(speed):
 	#fanSpeed = environment.settings["fanSpeed"]
 	fanSpeed=speed
-	if fanSpeed == "":
+	if fanSpeed == None:
 		pwmMotor.ChangeDutyCycle(0)
 		print("Fan is turned off")
 	else:
