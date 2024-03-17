@@ -16,15 +16,15 @@ pwmRed = GPIO.PWM(redPin, 50)
 pwmGreen = GPIO.PWM(greenPin, 50)
 pwmBlue = GPIO.PWM(bluePin, 50)
 
-pwmRed.start(0)
-pwmGreen.start(0)
-pwmBlue.start(0)
+pwmRed.start(100)
+pwmGreen.start(100)
+pwmBlue.start(100)
 
 def blink(pin):
-    pin.ChangeDutyCycle(intensity)
+    pin.ChangeDutyCycle(100-intensity)
 
 def turnOff(pin):
-	pin.ChangeDutyCycle(0)
+	pin.ChangeDutyCycle(100)
         
 def redOn():
 	blink(pwmRed)
@@ -72,11 +72,11 @@ def setLight(lightColor, lightIntensity):
 			blueOn()
 		elif lightColor == "warm":
 			warmOn()
-		elif lightColor == "Cyan":
+		elif lightColor == "cyan":
 			cyanOn()
-		elif lightColor == "Magenta":
+		elif lightColor == "magenta":
 			magentaOn()
-		elif lightColor == "White":
+		elif lightColor == "white":
 			whiteOn()
 	else:
 		lightsOff()

@@ -1,6 +1,7 @@
 import RPi.GPIO as GPIO
+import time
 from src.handler import makeAPIRequest 
-from src.lighting import setLight
+from src.lighting import setLight, lightsOff
 from src.fan import changeMotorSpeed
 from mfrc522 import SimpleMFRC522
 
@@ -14,11 +15,19 @@ def updateUserScan(user):
     return makeAPIRequest("PUT", "/rooms/" + roomID + "/users/" + user + "/scan")
 
 def scanUserAndReturnRoomInfo():
-    _, user = reader.read()
-    user = user.strip()
-    return user
+    try:
+        _, user = reader.read()
+        print(user[0],"m")
+        if(user!="" or user!=None or user!=" "):
+            return user[0]
+        else:
+            return(scanUserAndReturnRoomInfo())
+    except Exception as err:
+        print("scanning error occured: ", err)
+        return(scanUserAndReturnRoomInfo())
 
 def setToPreferences(roomInfo):
+    lightsOff()
     # environment.occupants = roomInfo["occupants"]
     # environment.settings = roomInfo["settings"]
     setLight(roomInfo[0]['light_color'],roomInfo[0]['light_intensity'])
@@ -40,18 +49,21 @@ try:
         print("Scanner ready to scan. You may scan now")
         #scanAwait()
         user = scanUserAndReturnRoomInfo()
-        roomInfo = updateUserScan(user)
-        if roomInfo != {}:
-            #scanSuccess()
-            # if user in environment.occupants:
-            #     displayMessage("Goodbye "+user + "!")
+        update = updateUserScan(user)
+        if(update):
+            roomInfo = getRoomInfo()
+            if roomInfo != {}:
+                print(roomInfo)
+                #scanSuccess()
+                # if user in environment.occupants:
+                #     displayMessage("Goodbye "+user + "!")
+                # else:
+                #     displayMessage("Welcome to the room "+user + "!")
+                setToPreferences(roomInfo)
+                # changeSubscription()
+                # printRoomInfo()
             # else:
-            #     displayMessage("Welcome to the room "+user + "!")
-            setToPreferences(roomInfo)
-            # changeSubscription()
-            # printRoomInfo()
-        # else:
-        #     scanFail()
+            #     scanFail()
         print("Wait till prompted other wise to scan again")
         time.sleep(2.5)
     
