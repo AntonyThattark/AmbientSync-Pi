@@ -1,8 +1,11 @@
 import RPi.GPIO as GPIO
 import time
+import threading
+import src.environment as environment
 from src.handler import makeAPIRequest 
 from src.lighting import setLight, lightsOff
 from src.fan import changeMotorSpeed
+from src.subscriber import mqttSetup
 from mfrc522 import SimpleMFRC522
 
 reader = SimpleMFRC522()
@@ -34,19 +37,32 @@ def setToPreferences(roomInfo):
     # checkTemperatureAndHumidity()
     changeMotorSpeed(roomInfo[0]['fan_speed'])
 
+def refreshPreferences(client, userdata, message):
+    print("Message received from broker. Topic: ", message.topic, " Content: ", message.payload)
+    roomInfo = getRoomInfo()
+    setToPreferences(roomInfo)
+
+def changeSubscription():
+    environment.mqttClient.subscribe('preference/'+roomID)
+
+
+mqttSubscriberThread = threading.Thread(target=mqttSetup, daemon=True)
+
 try:
     roomInfo = getRoomInfo()
     print(roomInfo)
-    #mqttSubscriberThread.start()
+    mqttSubscriberThread.start()
+    time.sleep(0.5)
     if roomInfo != {}:
-        #environment.mqttClient.on_message = refreshPreferences
+        environment.mqttClient.on_message = refreshPreferences
         setToPreferences(roomInfo)
-        #changeSubscription()
+        changeSubscription()
         #printRoomInfo()
         #weatherCheckThread.start()
         #displayThread.start()
     while True:
         print("Scanner ready to scan. You may scan now")
+        environment.mqttClient.on_message = refreshPreferences
         #scanAwait()
         user = scanUserAndReturnRoomInfo()
         update = updateUserScan(user)

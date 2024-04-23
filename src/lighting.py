@@ -64,11 +64,11 @@ def setLight(lightColor, lightIntensity):
 		global intensity
 		intensity=lightIntensity
 		print(intensity)
-		if lightColor == "Red":
+		if lightColor == "red":
 			redOn()
-		elif lightColor == "Green":
+		elif lightColor == "green":
 			greenOn()
-		elif lightColor == "Blue":
+		elif lightColor == "blue":
 			blueOn()
 		elif lightColor == "warm":
 			warmOn()
