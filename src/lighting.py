@@ -36,7 +36,6 @@ def blueOn():
 	blink(pwmBlue)
 	
 def warmOn():
-	print("Warm on")
 	blink(pwmRed)
 	blink(pwmGreen)
 
@@ -63,6 +62,7 @@ def setLight(lightColor, lightIntensity):
 	if(lightColor):
 		global intensity
 		intensity=lightIntensity
+		print(lightColor)
 		print(intensity)
 		if lightColor == "red":
 			redOn()

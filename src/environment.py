@@ -1,3 +1,5 @@
 
 
 mqttClient = None
+
+temp = None

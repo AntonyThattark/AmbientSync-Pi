@@ -3,7 +3,7 @@ import RPi.GPIO as GPIO
 
 # motorPin1 = 35
 # motorPin2 = 33
-motorPinE = 31
+motorPinE = 12
 
 GPIO.setmode(GPIO.BOARD)
 # GPIO.setup(motorPin1, GPIO.OUT)
